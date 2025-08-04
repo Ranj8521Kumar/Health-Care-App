@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Detection Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+            margin: 0;
+        }
+        #chat-container {
+            width: 90vw;
+            max-width: 400px;
+            height: 90vh;
+            max-height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #chat-window {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #e5ddd5;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        .user {
+            justify-content: flex-end;
+        }
+        .bot {
+            justify-content: flex-start;
+        }
+        .message-content {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .user .message-content {
+            background-color: #dcf8c6;
+        }
+        .bot .message-content {
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        #input-area {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            background-color: #f9f9f9;
+            align-items: center;
+        }
+        #input-area input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+        }
+        #input-area input[type="file"] {
+            display: none;
+        }
+        #input-area label {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        #input-area button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #input-area button:hover {
+            background-color: #45a049;
+        }
+        img#chat-image-preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        /* Media query for smaller screens */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 0;
+                height: 100vh;
+            }
+            #chat-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+            #chat-window {
+                padding: 15px;
+            }
+            #input-area input[type="text"] {
+                padding: 8px;
+            }
+            #input-area button {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-window">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <label for="image-input">
+                <img src="https://img.icons8.com/material-outlined/24/000000/image.png" alt="Upload Image" title="Upload Image">
+            </label>
+            <input type="file" id="image-input" accept="image/*">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const imageInput = document.getElementById('image-input');
+
+        // Function to append messages to the chat window
+        function appendMessage(sender, content, isImage = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+
+            if (isImage) {
+                const img = document.createElement('img');
+                img.src = content;
+                img.alt = 'Uploaded Image';
+                img.id = 'chat-image-preview';
+                messageContent.appendChild(img);
+            } else {
+                messageContent.textContent = content;
+            }
+
+            messageDiv.appendChild(messageContent);
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Function to handle bot responses
+        function botResponse(message) {
+            appendMessage('bot', message);
+        }
+
+        // Function to handle user messages
+        function userMessage(message) {
+            appendMessage('user', message);
+        }
+
+        window.onload = function() {
+            botResponse("Hello! I'm your Plant Disease Detection Bot. Please upload an image of a plant leaf to get started.");
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const message = userInput.value.trim();
+            if (message === '') return;
+    
+            userMessage(message);
+            userInput.value = '';
+    
+            // Example bot response to text input
+            if (message.toLowerCase().includes('hello')) {
+                botResponse("Hi there! Please upload an image of a plant leaf for disease detection.");
+            } else {
+                botResponse("I'm sorry, I can help you detect plant diseases. Please upload a plant leaf image.");
+            }
+        });
+
+        // Handle send button click
+        sendBtn.addEventListener('click', () => {
+            const message = userInput.value.trim();
+            if (message === '') return;
+
+            userMessage(message);
+            userInput.value = '';
+
+            // Here you can add bot responses to text messages if needed
+            // For example:
+            // botResponse("I'm here to help! You can upload an image of a plant leaf for disease detection.");
+        });
+
+        // Handle image upload
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                userImageMessage(imageDataUrl, file);
+            }
+
+            reader.readAsDataURL(file);
+        });
+
+        // Function to handle user image messages
+        function userImageMessage(imageDataUrl, file) {
+            // Display the image in the chat
+            appendMessage('user', imageDataUrl, true);
+
+            // Send the image to the backend for prediction
+            const formData = new FormData();
+            formData.append('image', file);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.prediction) {
+                    botResponse(`Prediction: ${data.prediction}`);
+                } else if (data.error) {
+                    botResponse(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                botResponse('Error making prediction.');
+            });
+        }
+
+        // Optional: Allow pressing Enter to send text messages
+        userInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
