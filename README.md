@@ -2,11 +2,25 @@
 
 A Flask-based web application that combines plant disease detection using TensorFlow with an AI chatbot powered by OpenAI GPT.
 
+---
+
+## 🌟 App Screenshot
+
+<!-- Replace the link below with your actual screenshot when available -->
+<p align="center">
+  <img src="app_screenshot_placeholder.png" alt="App Screenshot" width="600"/>
+</p>
+
+---
+
 ## Features
 
 - Plant disease detection using pre-trained TensorFlow model
 - AI chatbot for plant disease consultation using OpenAI GPT
-- Web-based interface for easy interaction
+- Modern, responsive web interface:
+  - **Desktop:** Navbar at the top, description panel on the left, chatbot on the right
+  - **Mobile:** Navbar at the top, description at the top, chatbot below
+- Easy image upload and instant feedback
 
 ## Prerequisites
 
@@ -65,7 +79,7 @@ export OPENAI_API_KEY=your_api_key_here
    ```bash
    # Windows
    venv\Scripts\activate.bat
-   
+
    # macOS/Linux
    source venv/bin/activate
    ```
@@ -79,8 +93,11 @@ export OPENAI_API_KEY=your_api_key_here
 
 ## Usage
 
-1. **Plant Disease Detection**: Upload an image of a plant to detect diseases
-2. **AI Chatbot**: Ask questions about plant diseases and treatments
+1. **Plant Disease Detection:** Upload an image of a plant leaf to detect diseases.
+2. **AI Chatbot:** Ask questions about plant diseases and treatments.
+3. **Modern UI:** 
+   - On desktop, you'll see a navigation bar, a description panel on the left, and the chatbot on the right.
+   - On mobile, the description appears at the top and the chatbot below for easy access.
 
 ## Dependencies
 
