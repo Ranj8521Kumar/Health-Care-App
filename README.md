@@ -8,7 +8,7 @@ A Flask-based web application that combines plant disease detection using Tensor
 
 <!-- Replace the link below with your actual screenshot when available -->
 <p align="center">
-  <img src="app_screenshot_placeholder.png" alt="App Screenshot" width="600"/>
+  <img width="1695" height="913" alt="image" src="https://github.com/user-attachments/assets/0ddbcfc4-a5d7-4dcb-9522-4ffee4f7eb34" />
 </p>
 
 ---
